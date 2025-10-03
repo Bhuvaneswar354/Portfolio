@@ -16,9 +16,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { passive: true });
 
     // Mobile menu toggle
-    mobileMenuBtn.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-    });
+    if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    }
 
     // Close mobile menu when link is clicked
     navLinkItems.forEach(link => {
@@ -86,46 +88,48 @@ document.addEventListener('DOMContentLoaded', () => {
     const formStatus = document.getElementById('formStatus');
     const submitBtn = document.getElementById('submitBtn');
 
-    contactForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        // Disable submit button
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Sending...';
-        
-        const formData = new FormData(contactForm);
-        
-        try {
-            const response = await fetch('https://formspree.io/f/manpjelw', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            });
+    if (contactForm) {
+        contactForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Disable submit button
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending...';
+            
+            const formData = new FormData(contactForm);
+            
+            try {
+                const response = await fetch('https://formspree.io/f/manpjelw', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
 
-            if (response.ok) {
-                formStatus.textContent = "Thanks! Your message has been sent.";
-                formStatus.style.color = 'var(--primary)';
-                contactForm.reset();
-            } else {
-                const data = await response.json();
-                if (data.errors) {
-                    formStatus.textContent = data.errors.map(error => error.message).join(", ");
+                if (response.ok) {
+                    formStatus.textContent = "Thanks! Your message has been sent.";
+                    formStatus.style.color = 'var(--primary)';
+                    contactForm.reset();
                 } else {
-                    formStatus.textContent = "Oops! There was a problem sending your message.";
+                    const data = await response.json();
+                    if (data.errors) {
+                        formStatus.textContent = data.errors.map(error => error.message).join(", ");
+                    } else {
+                        formStatus.textContent = "Oops! There was a problem sending your message.";
+                    }
+                    formStatus.style.color = 'var(--accent)';
                 }
+            } catch (error) {
+                formStatus.textContent = "Oops! There was a problem sending your message.";
                 formStatus.style.color = 'var(--accent)';
+            } finally {
+                // Re-enable submit button
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send Message';
             }
-        } catch (error) {
-            formStatus.textContent = "Oops! There was a problem sending your message.";
-            formStatus.style.color = 'var(--accent)';
-        } finally {
-            // Re-enable submit button
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Send Message';
-        }
-    });
+        });
+    }
 
     // ===== FLOATING PARTICLES EFFECT =====
     function createParticles() {
@@ -150,22 +154,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Add particle animation to CSS dynamically
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes floatParticle {
-            0% {
-                transform: translateY(100vh) scale(1);
-                opacity: 0.5;
-            }
-            100% {
-                transform: translateY(-100vh) scale(1.5);
-                opacity: 0;
-            }
-        }
-    `;
-    document.head.appendChild(style);
-    
     createParticles();
 
     // ===== ACTIVE NAV LINK HIGHLIGHT =====
