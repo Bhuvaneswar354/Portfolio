@@ -6,26 +6,26 @@
 }
 
 :root {
-    /* Colors - Changed pink to blue */
-    --primary: hsl(191, 100%, 50%);      /* Cyan */
+    /* Colors */
+    --primary: hsl(191, 100%, 50%);
     --primary-glow: hsl(191, 100%, 60%);
-    --accent: hsl(200, 100%, 50%);       /* Blue (replaced pink) */
-    --accent-2: hsl(265, 89%, 58%);      /* Purple */
+    --accent: hsl(200, 100%, 50%);
+    --accent-2: hsl(265, 89%, 58%);
     --bg-dark: hsl(225, 15%, 8%);
     --bg-card: hsl(225, 20%, 12%);
     --foreground: hsl(210, 40%, 98%);
     --muted: hsl(215, 20%, 65%);
     --border: hsl(217, 32%, 18%);
-    
+
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(191, 100%, 50%) 0%, hsl(265, 89%, 58%) 50%, hsl(200, 100%, 50%) 100%);
     --gradient-card: linear-gradient(135deg, rgba(26, 31, 58, 0.8) 0%, rgba(26, 31, 58, 0.4) 100%);
-    
+
     /* Shadows */
     --shadow-glow: 0 4px 20px rgba(0, 212, 255, 0.4);
     --shadow-glow-lg: 0 15px 40px rgba(0, 212, 255, 0.6), 0 0 30px rgba(0, 123, 255, 0.4);
     --shadow-card: 0 20px 60px rgba(0, 212, 255, 0.3), 0 0 40px rgba(0, 123, 255, 0.2);
-    
+
     /* Transitions */
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -171,7 +171,8 @@ nav.scrolled {
     transition: var(--transition);
 }
 
-.nav-link:hover {
+.nav-link:hover,
+.nav-link.active {
     color: var(--primary);
 }
 
@@ -215,7 +216,6 @@ nav.scrolled {
     display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
     padding-top: 80px;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
@@ -258,13 +258,23 @@ nav.scrolled {
 .hero-content {
     max-width: 1000px;
     animation: fadeInUp 1s ease-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.hero-text-content {
+    text-align: left;
+    max-width: 600px;
 }
 
 .avatar-wrapper {
     position: relative;
     width: 180px;
     height: 180px;
-    margin: 0 auto 2rem;
+    flex-shrink: 0;
 }
 
 .avatar-ring {
@@ -272,7 +282,7 @@ nav.scrolled {
     inset: 0;
     background: var(--gradient-primary);
     border-radius: 50%;
-    animation: spin 15s linear infinite;
+    
 }
 
 .avatar {
@@ -283,19 +293,16 @@ nav.scrolled {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 5rem;
+    overflow: hidden;
     animation: float 3s ease-in-out infinite;
 }
 
-.avatar-glow {
-    position: absolute;
-    inset: 0;
-    background: var(--gradient-primary);
-    border-radius: 50%;
-    filter: blur(20px);
-    opacity: 0.7;
-    animation: pulse 2s ease-in-out infinite;
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
+
 
 .hero-title {
     font-size: 3.5rem;
@@ -314,7 +321,6 @@ nav.scrolled {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-    justify-content: center;
 }
 
 /* ===== CARDS ===== */
@@ -716,6 +722,17 @@ nav.scrolled {
     }
 }
 
+@keyframes floatParticle {
+    0% {
+        transform: translateY(100vh) scale(1);
+        opacity: 0.5;
+    }
+    100% {
+        transform: translateY(-100vh) scale(1.5);
+        opacity: 0;
+    }
+}
+
 .fade-in-element {
     opacity: 0;
     transform: translateY(30px);
@@ -756,6 +773,15 @@ nav.scrolled {
         display: flex;
     }
 
+    .hero-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero-text-content {
+        text-align: center;
+    }
+
     .hero-title {
         font-size: 2.5rem;
     }
@@ -764,42 +790,8 @@ nav.scrolled {
         font-size: 1.2rem;
     }
 
-    .section-title {
-        font-size: 2.5rem;
-    }
-
-    .skills-grid,
-    .projects-grid,
-    .certifications-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .education-item {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .education-degree {
-        font-size: 1.5rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .hero-title {
-        font-size: 2rem;
-    }
-
-    .hero-subtitle {
-        font-size: 1rem;
-    }
-
     .hero-buttons {
-        flex-direction: column;
-        width: 100%;
-    }
-
-    .btn {
-        width: 100%;
+        justify-content: center;
     }
 
     .section-title {
